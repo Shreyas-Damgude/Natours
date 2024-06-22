@@ -1,4 +1,5 @@
 const hpp = require("hpp");
+const cors = require("cors");
 const path = require("path");
 const helmet = require("helmet");
 const morgan = require("morgan");
@@ -18,10 +19,17 @@ const globalErrorHandler = require(`${__dirname}/controllers/errorController`);
 
 const app = express();
 
+app.enable("trust proxy");
+
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
 // 1) GLOBAL MIDDLEWARES
+// Implement cors
+app.use(cors());
+
+app.options("*", cors());
+
 // Serving static files
 app.use(express.static(path.join(__dirname, "public")));
 
