@@ -51,6 +51,6 @@
     "plugin-import": "^1.0.52"
   },
   "engines": {
-    "node": "^22"
+    "node": "20.x"
   }
 }
