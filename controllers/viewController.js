@@ -41,6 +41,13 @@ exports.getLoginTemp = function (request, response) {
   });
 };
 
+// Renders signup page
+exports.getSignupTemp = function (request, response) {
+  response.status(200).render("signup", {
+    title: "Create your new account",
+  });
+};
+
 // Renders user account page
 exports.getAccountTemp = function (request, response) {
   response.status(200).render("account", {

@@ -14,7 +14,7 @@ const DB = process.env.DATABASE.replace(
 mongoose.connect(DB).then(() => console.log("Database Connection Successful"));
 
 // Server listening
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 const server = app.listen(port, () =>
   console.log(`App is running on port ${port}...`)
 );

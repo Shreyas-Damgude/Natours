@@ -3,6 +3,7 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 
+const Email = require(`${__dirname}/../utils/email`);
 const User = require(`${__dirname}/../models/userModel`);
 const AppError = require(`${__dirname}/../utils/appError`);
 const catchAsync = require(`${__dirname}/../utils/catchAsync`);
@@ -47,6 +48,10 @@ exports.signup = catchAsync(async function (request, response, next) {
     password: request.body.password,
     passwordConfirm: request.body.passwordConfirm,
   });
+
+  const url = `${request.protocol}://${request.get("host")}/me`;
+
+  await new Email(newUser, url).sendWelcome();
 
   createAndSendToken(newUser, 201, response);
 });
@@ -181,10 +186,11 @@ exports.forgotPassword = catchAsync(async function (request, response, next) {
       "host"
     )}/api/v1/users/resetPassword/${resetToken}`;
 
+    await new Email(user, resetURL).sendPasswordReset();
+
     response.status(200).json({
       status: "success",
       message: "Token sent to email",
-      resetURL,
     });
   } catch (err) {
     user.passwordResetToken = undefined;

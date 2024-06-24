@@ -8,6 +8,7 @@ const {
 const {
   getTourTemp,
   getLoginTemp,
+  getSignupTemp,
   getAccountTemp,
   updateUserData,
   getOverviewTemp,
@@ -20,6 +21,7 @@ const router = express.Router();
 router.get("/me", protect, getAccountTemp);
 router.get("/", isLoggedIn, getOverviewTemp);
 router.get("/login", isLoggedIn, getLoginTemp);
+router.get("/signup", isLoggedIn, getSignupTemp);
 router.get("/tour/:slug", isLoggedIn, getTourTemp);
 router.post("/submit-user-data", protect, updateUserData);
 

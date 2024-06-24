@@ -1,5 +1,6 @@
 import { login, logout } from "./login";
 import { updateSettings } from "./updateSettings";
+import { signup } from "./signup";
 
 // Delegation
 document.querySelector(".form--login")?.addEventListener("submit", (e) => {
@@ -7,6 +8,17 @@ document.querySelector(".form--login")?.addEventListener("submit", (e) => {
   const email = document.querySelector("#email").value;
   const password = document.querySelector("#password").value;
   login(email, password);
+});
+
+document.querySelector(".form--signup")?.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const name = document.querySelector("#name").value;
+  const email = document.querySelector("#email").value;
+  const role = document.querySelector("#role").value.toLowerCase();
+  const password = document.querySelector("#password").value;
+  const passwordConfirm = document.querySelector("#password-confirm").value;
+
+  signup({ name, email, role, password, passwordConfirm });
 });
 
 document.querySelector(".nav__el--logout")?.addEventListener("click", logout);

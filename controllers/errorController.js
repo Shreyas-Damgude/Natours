@@ -60,17 +60,19 @@ function sendErrorProd(error, request, response) {
   if (request.originalUrl.startsWith("/api")) {
     // Operational Error
     if (error.isOperational) {
-      return response
-        .status(error.statusCode)
-        .json({ status: error.status, message: error.message });
+      return response.status(error.statusCode).json({
+        status: error.status,
+        message: error.message,
+      });
     }
 
     // Programming Error
     console.error(error);
 
-    return response
-      .status(500)
-      .json({ status: "error", message: "Something went very wrong" });
+    return response.status(500).json({
+      status: "error",
+      message: "Something went very wrong",
+    });
   }
 
   // Rendered website
