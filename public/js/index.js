@@ -1,13 +1,14 @@
-import { login, logout } from "./login";
 import { updateSettings } from "./updateSettings";
-import { signup } from "./signup";
+import { authenticate, logout } from "./authenticate";
+import { forgotPassword, resetPassword } from "./passwordReset";
 
 // Delegation
 document.querySelector(".form--login")?.addEventListener("submit", (e) => {
   e.preventDefault();
   const email = document.querySelector("#email").value;
   const password = document.querySelector("#password").value;
-  login(email, password);
+
+  authenticate("login", { email, password });
 });
 
 document.querySelector(".form--signup")?.addEventListener("submit", (e) => {
@@ -18,7 +19,7 @@ document.querySelector(".form--signup")?.addEventListener("submit", (e) => {
   const password = document.querySelector("#password").value;
   const passwordConfirm = document.querySelector("#password-confirm").value;
 
-  signup({ name, email, role, password, passwordConfirm });
+  authenticate("signup", { name, email, role, password, passwordConfirm });
 });
 
 document.querySelector(".nav__el--logout")?.addEventListener("click", logout);
@@ -50,4 +51,31 @@ document
     document.querySelector("#password-current").value = "";
     document.querySelector("#password").value = "";
     document.querySelector("#password-confirm").value = "";
+  });
+
+document
+  .querySelector(".form--forgot-password")
+  ?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    document.querySelector(".btn--green").textContent = "Verifying...";
+    const email = document.querySelector("#email").value;
+
+    await forgotPassword({ email });
+
+    document.querySelector(".btn--green").textContent = "Verified";
+  });
+
+document
+  .querySelector(".form--reset-password")
+  ?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const resetToken = window.location.pathname.split("/").at(-1);
+
+    document.querySelector(".btn--green").textContent = "Updating...";
+    const password = document.querySelector("#password").value;
+    const passwordConfirm = document.querySelector("#password-confirm").value;
+
+    await resetPassword({ password, passwordConfirm }, resetToken);
+
+    document.querySelector(".btn--green").textContent = "Updated";
   });

@@ -1,18 +1,18 @@
 import { showAlert } from "./alerts";
 
-export async function login(email, password) {
+export async function authenticate(action, data) {
   try {
     const res = await axios({
       method: "POST",
-      url: "/api/v1/users/login",
-      data: {
-        email,
-        password,
-      },
+      url: `/api/v1/users/${action}`,
+      data,
     });
 
     if (res.data.status === "success") {
-      showAlert("success", "Logged in successfully!");
+      showAlert(
+        "success",
+        action === "signup" ? "Account Created!" : "Logged in successfully!"
+      );
       window.setTimeout(() => {
         location.assign("/");
       }, 1000);

@@ -22,13 +22,13 @@ module.exports = class {
 
   createNewTransport() {
     return nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
+      host: process.env.MAILTRAP_HOST,
+      port: process.env.MAILTRAP_PORT,
 
-      secure: process.env.EMAIL_PORT === 465 ? true : false,
+      secure: process.env.MAILTRAP_PORT === 465 ? true : false,
       auth: {
-        user: process.env.EMAIL_ID,
-        pass: process.env.EMAIL_PASSWORD,
+        user: process.env.MAILTRAP_ID,
+        pass: process.env.MAILTRAP_PASSWORD,
       },
     });
   }
@@ -69,12 +69,12 @@ module.exports = class {
   }
 
   async sendWelcome() {
-    await this.send("welcome", "Welcome to Natours Family");
+    await this.send("welcomeEmail", "Welcome to Natours Family");
   }
 
   async sendPasswordReset() {
     await this.send(
-      "passwordReset",
+      "resetPasswordEmail",
       "Your password reset token (valid for only 10 minutes)"
     );
   }

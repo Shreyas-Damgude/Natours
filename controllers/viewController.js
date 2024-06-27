@@ -55,6 +55,20 @@ exports.getAccountTemp = function (request, response) {
   });
 };
 
+// Renders forgot password page
+exports.getForgotPasswordTemp = function (request, response) {
+  response.status(200).render("forgotPassword", {
+    title: "Forgot Password",
+  });
+};
+
+// Renders reset password page
+exports.getResetPasswordTemp = function (request, response) {
+  response.status(200).render("resetPassword", {
+    title: "Reset Password",
+  });
+};
+
 // Updates the user details(name and email)
 exports.updateUserData = catchAsync(async function (request, response, next) {
   const updatedUser = await User.findByIdAndUpdate(
