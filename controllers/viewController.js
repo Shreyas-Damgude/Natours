@@ -37,6 +37,8 @@ exports.getBookingsTemp = catchAsync(async function (request, response, next) {
 
   // Get tour data from collection
   const bookings = await features.query;
+  if (!bookings.length) next("You do not have any bookings");
+
   const tourIds = [];
   bookings.forEach((booking) => tourIds.push(booking.tour.id));
   const tours = await Tour.find({ _id: { $in: tourIds } });
