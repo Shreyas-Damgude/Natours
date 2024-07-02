@@ -37,10 +37,12 @@ exports.getBookingsTemp = catchAsync(async function (request, response, next) {
 
   // Get tour data from collection
   const bookings = await features.query;
-  if (!bookings.length) next("You do not have any bookings");
+  if (!bookings.length)
+    return response
+      .status(200)
+      .render("message", { msg: "You do not have any bookings" });
 
-  const tourIds = [];
-  bookings.forEach((booking) => tourIds.push(booking.tour.id));
+  const tourIds = bookings.map((booking) => booking.tour.id);
   const tours = await Tour.find({ _id: { $in: tourIds } });
 
   // Render that template using tour data from above
