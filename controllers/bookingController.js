@@ -11,7 +11,7 @@ const {
 } = require(`${__dirname}/handlerFactory`);
 
 exports.isBooked = catchAsync(async function (request, response, next) {
-  const bookings = await Booking.find();
+  const bookings = await Booking.find({ user: request.user.id });
 
   const booked = bookings.some(
     (booking) =>

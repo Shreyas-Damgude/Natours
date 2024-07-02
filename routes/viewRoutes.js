@@ -28,8 +28,8 @@ router.get("/login", isLoggedIn, getLoginTemp);
 router.get("/signup", isLoggedIn, getSignupTemp);
 router.get("/forgot-password", getForgotPasswordTemp);
 router.post("/submit-user-data", protect, updateUserData);
+router.get("/tour/:slug", isLoggedIn, isBooked, getTourTemp);
 router.get("/reset-password/:resetToken", getResetPasswordTemp);
 router.get("/my-bookings", protect, isLoggedIn, getBookingsTemp);
-router.get("/tour/:slug", isLoggedIn, isBooked, getTourTemp);
 
 module.exports = router;
