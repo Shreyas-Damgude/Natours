@@ -12,7 +12,6 @@ export async function forgotPassword(data) {
       showAlert("success", "Mail sent to your email! You can close this tab");
     }
   } catch (err) {
-    console.log(err);
     showAlert("error", err.response.data.message);
   }
 }

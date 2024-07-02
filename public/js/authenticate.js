@@ -39,3 +39,21 @@ export async function logout() {
     showAlert("error", "Error logging out! Try again");
   }
 }
+
+export async function deleteAccount() {
+  try {
+    const res = await axios({
+      method: "DELETE",
+      url: "/api/v1/users/deleteMe",
+    });
+
+    if (res.status === 204) {
+      showAlert("success", "Account Deleted");
+      window.setTimeout(() => {
+        location.assign("/");
+      }, 1000);
+    }
+  } catch (err) {
+    showAlert("error", err.response.data.message);
+  }
+}

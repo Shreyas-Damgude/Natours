@@ -1,5 +1,6 @@
+import { bookTour } from "./booking";
 import { updateSettings } from "./updateSettings";
-import { authenticate, logout } from "./authenticate";
+import { authenticate, logout, deleteAccount } from "./authenticate";
 import { forgotPassword, resetPassword } from "./passwordReset";
 
 // Delegation
@@ -40,7 +41,7 @@ document
     e.preventDefault();
     document.querySelector(".btn--save-password").textContent = "Updating...";
     const passwordCurrent = document.querySelector("#password-current").value;
-    const password = document.querySelector("#password").value;
+    const password = document.querySelector("#password-new").value;
     const passwordConfirm = document.querySelector("#password-confirm").value;
     await updateSettings(
       { passwordCurrent, password, passwordConfirm },
@@ -78,4 +79,17 @@ document
     await resetPassword({ password, passwordConfirm }, resetToken);
 
     document.querySelector(".btn--green").textContent = "Updated";
+  });
+
+document.querySelector("#book-tour")?.addEventListener("click", (e) => {
+  e.preventDefault();
+  const { tourId: tour, userId: user, price } = e.target.dataset;
+  bookTour({ tour, user, price });
+});
+
+document
+  .querySelector(".form-delete-account")
+  ?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    deleteAccount();
   });

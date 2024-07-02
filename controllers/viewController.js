@@ -2,7 +2,9 @@
 const Tour = require(`${__dirname}/../models/tourModel`);
 const User = require(`${__dirname}/../models/userModel`);
 const AppError = require(`${__dirname}/../utils/appError`);
+const Booking = require(`${__dirname}/../models/bookingModel`);
 const catchAsync = require(`${__dirname}/../utils/catchAsync`);
+const APIFeatures = require(`${__dirname}/../utils/apiFeatures`);
 
 // Renders the tour page
 exports.getTourTemp = catchAsync(async function (request, response, next) {
@@ -22,10 +24,40 @@ exports.getTourTemp = catchAsync(async function (request, response, next) {
   });
 });
 
+// Renders the bookings page
+exports.getBookingsTemp = catchAsync(async function (request, response, next) {
+  const features = new APIFeatures(
+    Booking.find({ user: request.user.id }),
+    request.query
+  )
+    .sort()
+    .filter()
+    .paginate()
+    .limitFields();
+
+  // Get tour data from collection
+  const bookings = await features.query;
+  const tourIds = [];
+  bookings.forEach((booking) => tourIds.push(booking.tour.id));
+  const tours = await Tour.find({ _id: { $in: tourIds } });
+
+  // Render that template using tour data from above
+  response.status(200).render("overview", {
+    title: "My Bookings",
+    tours,
+  });
+});
+
 // Renders home page
 exports.getOverviewTemp = catchAsync(async function (request, response, next) {
+  const features = new APIFeatures(Tour.find(), request.query)
+    .sort()
+    .filter()
+    .paginate()
+    .limitFields();
+
   // Get tour data from collection
-  const tours = await Tour.find();
+  const tours = await features.query;
 
   // Render that template using tour data from above
   response.status(200).render("overview", {

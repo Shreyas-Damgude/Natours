@@ -1,11 +1,11 @@
 extends base
 
 mixin navItem(link, icon, text, active)
-    li(class=`${active && 'side-nav--active'}`)
-    a(href=`${link}`)
-        svg
-            use(xlink:href=`img/icons.svg#icon-${icon}`)
-        | #{text}
+    li(class=`${(active) ? 'side-nav--active' : ''}`)
+        a(href=`${link}`)
+            svg
+                use(xlink:href=`img/icons.svg#icon-${icon}`)
+            | #{text}
 
 block content 
     main.main
@@ -13,7 +13,7 @@ block content
             nav.user-view__menu
                 ul.side-nav
                     +navItem('#', 'settings', 'Settings', true)
-                    +navItem('#', 'briefcase', 'My Bookings')
+                    +navItem('/my-bookings', 'briefcase', 'My Bookings')
                     +navItem('#', 'star', 'My Reviews')
                     +navItem('#', 'credit-card', 'Billing')
                 -if (user.role === 'admin')
@@ -28,7 +28,6 @@ block content
             .user-view__content
                 .user-view__form-container
                     h2.heading-secondary.ma-bt-md Your account settings
-                    //- form.form.form-user-data(action='/submit-user-data' method='POST')
                     form.form.form-user-data
                         .form__group
                             label.form__label(for='name') Name
@@ -54,9 +53,17 @@ block content
                             input#password-current.form__input(type='password', placeholder='••••••••', required, minlength='8')
                         .form__group
                             label.form__label(for='password') New password
-                            input#password.form__input(type='password', placeholder='••••••••', required, minlength='8')
+                            input#password-new.form__input(type='password', placeholder='••••••••', required, minlength='8')
                         .form__group.ma-bt-lg
                             label.form__label(for='password-confirm') Confirm password
                             input#password-confirm.form__input(type='password', placeholder='••••••••', required, minlength='8')
                         .form__group.right
                             button.btn.btn--small.btn--green.btn--save-password Save password
+
+                .line &nbsp;
+
+                .user-view__form-container
+                    h2.heading-secondary.ma-bt-md Delete Account
+                    form.form.form-delete-account
+                        .form__group.right
+                            button.btn.btn--small.btn--green Delete
