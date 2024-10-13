@@ -14,9 +14,11 @@ const {
 
 const router = express.Router();
 
+router.route("/").post(createBooking);
+
 router.use(protect, restrictTo("admin", "lead-guide"));
 
-router.route("/").get(getAllBookings).post(createBooking);
+router.route("/").get(getAllBookings);
 
 router.route("/:id").get(getBooking).patch(updateBooking).delete(deleteBooking);
 
