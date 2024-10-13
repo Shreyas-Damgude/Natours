@@ -3,7 +3,7 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 
-const Email = require(`${__dirname}/../utils/email`);
+// const Email = require(`${__dirname}/../utils/email`);
 const User = require(`${__dirname}/../models/userModel`);
 const AppError = require(`${__dirname}/../utils/appError`);
 const catchAsync = require(`${__dirname}/../utils/catchAsync`);
@@ -51,7 +51,7 @@ exports.signup = catchAsync(async function (request, response, next) {
 
   const url = `${request.protocol}://${request.get("host")}/me`;
 
-  await new Email(newUser, url).sendWelcome();
+  // await new Email(newUser, url).sendWelcome();
 
   createAndSendToken(newUser, 201, response);
 });
@@ -171,39 +171,39 @@ exports.restrictTo = function (...roles) {
 };
 
 // Provides reset password url
-exports.forgotPassword = catchAsync(async function (request, response, next) {
-  // Get user based on POSTed email
-  const { email } = request.body;
-  const user = await User.findOne({ email });
-  if (!user) return next(new AppError("No user found with this email", 404));
+// exports.forgotPassword = catchAsync(async function (request, response, next) {
+//   // Get user based on POSTed email
+//   const { email } = request.body;
+//   const user = await User.findOne({ email });
+//   if (!user) return next(new AppError("No user found with this email", 404));
 
-  // Generate the random reset token
-  const resetToken = user.createPasswordResetToken();
-  await user.save({ validateBeforeSave: false });
+//   // Generate the random reset token
+//   const resetToken = user.createPasswordResetToken();
+//   await user.save({ validateBeforeSave: false });
 
-  // Send it to user's email
-  try {
-    const resetURL = `${request.protocol}://${request.get(
-      "host"
-    )}/reset-password/${resetToken}`;
+//   // Send it to user's email
+//   try {
+//     // const resetURL = `${request.protocol}://${request.get(
+//     //   "host"
+//     // )}/reset-password/${resetToken}`;
 
-    await new Email(user, resetURL).sendPasswordReset();
+//     // await new Email(user, resetURL).sendPasswordReset();
 
-    response.status(200).json({
-      status: "success",
-      message: "Token sent to email",
-    });
-  } catch (err) {
-    user.passwordResetToken = undefined;
-    user.passwordResetExpires = undefined;
-    await user.save({ validateBeforeSave: false });
+//     response.status(200).json({
+//       status: "success",
+//       message: "Token sent to email",
+//     });
+//   } catch (err) {
+//     user.passwordResetToken = undefined;
+//     user.passwordResetExpires = undefined;
+//     await user.save({ validateBeforeSave: false });
 
-    return next(
-      new AppError("There was an error sending the email, Try again later"),
-      500
-    );
-  }
-});
+//     return next(
+//       new AppError("There was an error sending the email, Try again later"),
+//       500
+//     );
+//   }
+// });
 
 // Resets the password
 exports.resetPassword = catchAsync(async function (request, response, next) {
